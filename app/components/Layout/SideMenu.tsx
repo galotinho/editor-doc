@@ -8,7 +8,8 @@ export default function SideMenu() {
 
   const menuItems = [
     { name: 'Gerar Documento', href: '/' },
-    { name: 'Gerenciar Variáveis', href: '/variables' },
+    { name: 'Gerenciar Documento com Seções', href: '/loop' },
+    { name: 'Gerenciar Variáveis', href: '/variables' },    
   ];
 
   return (
