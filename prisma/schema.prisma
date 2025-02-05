@@ -1,0 +1,26 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Template {
+  id               String             @id @default(uuid())
+  filename         String
+  key              String             @unique
+  bucket           String
+  createdAt        DateTime           @default(now())
+  TemplateVariable TemplateVariable[]
+}
+
+model TemplateVariable {
+  id         String    @id @default(uuid())
+  name       String    @unique
+  value      String
+  template   Template? @relation(fields: [templateId], references: [id])
+  templateId String?
+}
