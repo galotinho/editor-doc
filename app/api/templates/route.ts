@@ -4,7 +4,7 @@ import { PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import Docxtemplater from 'docxtemplater';
 import PizZip from 'pizzip';
 import { Readable } from 'stream';
-import sharp from 'sharp';
+//import sharp from 'sharp';
 
 import docxtemplaterImageModuleFree from 'docxtemplater-image-module-free';
 

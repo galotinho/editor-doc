@@ -17,7 +17,8 @@
     "next": "15.1.6",
     "pizzip": "^3.1.8",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "xlsx-template": "^1.4.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

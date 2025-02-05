@@ -11,10 +11,8 @@ export default function DocxEditorLoop() {
   // Estado para armazenar o arquivo selecionado
   const [file, setFile] = useState<File | null>(null);
 
-  // Estado para o array de items, incluindo imageUrl
-  const [items, setItems] = useState<Item[]>([
-    { nome: "", cargo: "", image: "" },
-  ]);
+  // Estado para o array de items, incluindo a URL da imagem
+  const [items, setItems] = useState<Item[]>([{ nome: "", cargo: "", image: "" }]);
 
   // Função para adicionar mais um item vazio
   const addItem = () => {
@@ -28,7 +26,7 @@ export default function DocxEditorLoop() {
     setItems(newItems);
   };
 
-  // Quando usuário altera um campo (nome, cargo ou imageUrl)
+  // Quando o usuário altera um campo (nome, cargo ou image)
   const updateItem = (index: number, field: keyof Item, value: string) => {
     const newItems = [...items];
     newItems[index][field] = value;
@@ -39,13 +37,22 @@ export default function DocxEditorLoop() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!file) {
-      alert("Selecione um arquivo .docx primeiro");
+      alert("Selecione um arquivo primeiro");
       return;
     }
 
-    // Monta as variáveis para o Docxtemplater
-    // Aqui passamos "items" como um array de objetos,
-    // cada um contendo nome, cargo e imageUrl
+    // Identifica o endpoint com base na extensão do arquivo
+    let endpoint = "";
+    if (file.name.toLowerCase().endsWith(".docx")) {
+      endpoint = "/api/templates";
+    } else if (file.name.toLowerCase().endsWith(".xlsx")) {
+      endpoint = "/api/xlsx-template";
+    } else {
+      alert("Tipo de arquivo não suportado. Selecione um arquivo DOCX ou XLSX.");
+      return;
+    }
+
+    // Monta as variáveis para o Docxtemplater/xlsx-template
     const variables = { items };
 
     // Cria o formData com o template e as variáveis
@@ -54,7 +61,7 @@ export default function DocxEditorLoop() {
     formData.append("variables", JSON.stringify(variables));
 
     try {
-      const response = await fetch("/api/templates", {
+      const response = await fetch(endpoint, {
         method: "POST",
         body: formData,
       });
@@ -84,10 +91,10 @@ export default function DocxEditorLoop() {
     <div className="container mx-auto p-4">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block mb-2">Template DOCX:</label>
+          <label className="block mb-2">Template (DOCX ou XLSX):</label>
           <input
             type="file"
-            accept=".docx"
+            accept=".docx,.xlsx"
             onChange={(e) => setFile(e.target.files?.[0] || null)}
             className="file-input file-input-bordered"
           />
